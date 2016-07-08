@@ -3,15 +3,19 @@ List of postgres commands
 
 ###### Find INVALID indices
 
+```
 SELECT schemaname || '.' || relname AS table, indexrelname AS index, pg_size_pretty(pg_relation_size(i.indexrelid)) AS index_size, indisvalid AS is_index_valid
 FROM pg_stat_user_indexes ui 
    JOIN pg_index i ON ui.indexrelid =i.indexrelid WHERE 
     indisvalid is false; 
+```
+    
     
 
 
 ##### List Blocker sessions recurssively
 
+```
 WITH RECURSIVE
      c(requested, CURRENT) AS
        ( VALUES
@@ -120,3 +124,4 @@ SELECT distinct rview.pid, rview.blocker_pid
 	JOIN pg_catalog.pg_stat_activity session_info  ON  (/*rview.blocker_pid in (19122) and */(rview.pid =session_info.pid or rview.blocker_pid =session_info.pid))
   ORDER BY seq
 ;
+```
